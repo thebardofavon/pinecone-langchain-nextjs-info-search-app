@@ -1,6 +1,6 @@
 # Pinecone, Langchain, Next.js Search Application on Custom Database using OpenAI model
 This is an app that takes text (text files), embeds them into vectors, stores them into Pinecone, and allows semantic searching of the data.
-In this project, the custom database is the [LangChain Documentation]([https://app.pinecone.io/](https://python.langchain.com/docs/get_started/introduction)) for users to get their questions about the phenomenal framework directly answered.
+In this project, the custom database is the [LangChain Documentation](https://python.langchain.com/docs/get_started/introduction) for users to get their questions about the phenomenal framework directly answered.
 ## Running the app
 
 ### Prerequisites
