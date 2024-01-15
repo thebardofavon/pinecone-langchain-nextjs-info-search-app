@@ -1,5 +1,5 @@
-# An FAQ Application using Pinecone, Langchain, OpenAI API and Next.js on Custom Database
-
+# Pinecone, Langchain, OpenAI API and Next.js on Custom Database
+This is an app that takes text (text files), embeds them into vectors, stores them into Pinecone, and allows semantic searching of the data.
 ## Running the app
 
 ### Prerequisites
