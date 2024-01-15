@@ -17,7 +17,8 @@ To run the app locally, follow these steps:
 1. Clone this repo
 
 ```sh
-git clone 
+git clone git@github.com:thebardofavon/pinecone-langchain-nextjs-info-search-app.git
+
 ```
 
 2. Change into the directory and install the dependencies using either NPM or Yarn
