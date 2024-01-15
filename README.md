@@ -23,7 +23,7 @@ git clone git@github.com:thebardofavon/pinecone-langchain-nextjs-info-search-app
 
 2. Change into the directory and install the dependencies using either NPM or Yarn
 
-3. Update `.env.local` with your API keys and environment.
+3. Update `.env.local` with your own API keys and environment.
 
 4. You can also add custom text or markdown files into the `/documents` folder.
 
