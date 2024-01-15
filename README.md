@@ -1,4 +1,4 @@
-# An FAQ Application using Pinecone, Langchain, OpenAI API and Next.js
+# An FAQ Application using Pinecone, Langchain, OpenAI API and Next.js on Custom Database
 
 ## Running the app
 
