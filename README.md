@@ -1,5 +1,6 @@
-# An FAQ Application using Pinecone, Langchain, OpenAI API and Next.js
-
+# Pinecone, LangChain, Next.js Information Search Application on Custom Database using OpenAI model
+This is an app that takes text (text files), embeds them into vectors, stores them into Pinecone, and allows semantic searching of the data.
+In this project, the custom database is the [LangChain Documentation](https://python.langchain.com/docs/get_started/introduction) for users to get their questions about the phenomenal framework directly answered.
 ## Running the app
 
 ### Prerequisites
@@ -16,12 +17,13 @@ To run the app locally, follow these steps:
 1. Clone this repo
 
 ```sh
-git clone 
+git clone git@github.com:thebardofavon/pinecone-langchain-nextjs-info-search-app.git
+
 ```
 
 2. Change into the directory and install the dependencies using either NPM or Yarn
 
-3. Update `.env.local` with your API keys and environment.
+3. Update `.env.local` with your own API keys and environment.
 
 4. You can also add custom text or markdown files into the `/documents` folder.
 
