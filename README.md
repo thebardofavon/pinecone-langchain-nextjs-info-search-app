@@ -1,6 +1,6 @@
 # Pinecone, LangChain, Next.js Information Search Application on Custom Database using OpenAI model
 This is an app that takes text (text files), embeds them into vectors, stores them into Pinecone, and allows semantic searching of the data.
-In this project, the custom database is information about my college, Indian Institute of Information Technology, Guwuahati (IIITG) (https://iiitg.ac.in/).
+In this project, the custom database is information about my college, [Indian Institute of Information Technology, Guwuahati (IIITG)] (https://iiitg.ac.in/).
 
 ### Prerequisites
 
