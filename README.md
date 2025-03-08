@@ -1,4 +1,4 @@
-# Pinecone, LangChain, Next.js Information Search Application on Custom Database using OpenAI model
+# Pinecone, LangChain, Next.js Information Search Application on Custom Database using Llama 3
 This is an app that takes text (text files), embeds them into vectors, stores them into Pinecone, and allows semantic searching of the data.
 In this project, the custom database is information about my college, [Indian Institute of Information Technology, Guwahati (IIITG)](https://iiitg.ac.in/).
 
@@ -6,8 +6,8 @@ In this project, the custom database is information about my college, [Indian In
 
 To run this app, you need the following:
 
-1. [Pinecone](https://app.pinecone.io/) API Key
-2. An [OpenAI](https://platform.openai.com/) API key
+1. Pinecone API Key
+2. Groq API key
 
 ### To run
 
