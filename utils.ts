@@ -1,9 +1,7 @@
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
-import { OpenAI } from 'langchain/llms/openai'
-import { loadQAStuffChain } from 'langchain/chains'
-import { Document } from 'langchain/document'
 import { timeout } from './config'
+import { makeChain } from './makeChain';
+import { GroqEmbeddings } from "@langchain/groq";
 
 export const queryPineconeVectorStoreAndQueryLLM = async (
   client,
@@ -12,7 +10,10 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
 ) => {
   console.log('Querying Pinecone vector store...');
   const index = client.Index(indexName);
-  const queryEmbedding = await new OpenAIEmbeddings().embedQuery(question)
+  const embeddings = new GroqEmbeddings({
+    apiKey: process.env.GROQ_API_KEY,
+  }) 
+  const queryEmbedding = await embeddings.embedQuery(question);
   let queryResponse = await index.query({
     queryRequest: {
       topK: 10,
@@ -24,22 +25,14 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
   console.log(`Found ${queryResponse.matches.length} matches...`);
   console.log(`Asking question: ${question}...`);
   if (queryResponse.matches.length) {
-    // const llm = new OpenAI({});
-    const llm = new OpenAI({
-      modelName: 'gpt-3.5-turbo-1106'
-    });
-    const chain = loadQAStuffChain(llm);
-    const concatenatedPageContent = queryResponse.matches
-      .map((match) => match.metadata.pageContent)
-      .join(" ");
+    const chain = makeChain(vectorStore);
     const result = await chain.call({
-      input_documents: [new Document({ pageContent: concatenatedPageContent })],
-      question: question,
+      question,
+      chat_history: []
     });
-    console.log(`Answer: ${result.text}`);
-    return result.text
+    return result.text;
   } else {
-    console.log('Since there are no matches, GPT-3 will not be queried.');
+    console.log('Since there are no matches, Llama 3 will not be queried.');
   }
 };
 export const createPineconeIndex = async (
@@ -83,9 +76,13 @@ export const updatePinecone = async (client, indexName, docs) => {
     const chunks = await textSplitter.createDocuments([text]);
     console.log(`Text split into ${chunks.length} chunks`);
     console.log(
-      `Calling OpenAI's Embedding endpoint documents with ${chunks.length} text chunks ...`
+      `Calling Llama 3's Embedding endpoint documents with ${chunks.length} text chunks ...`
     );
-    const embeddingsArrays = await new OpenAIEmbeddings().embedDocuments(
+
+    const embeddings = new GroqEmbeddings({
+      apiKey: process.env.GROQ_API_KEY,
+    })
+    const embeddingsArrays = await embeddings.embedDocuments(
       chunks.map((chunk) => chunk.pageContent.replace(/\n/g, " "))
     );
     console.log('Finished embedding documents');
