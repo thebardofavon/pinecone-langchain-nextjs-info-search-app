@@ -1,83 +1,87 @@
-'use client'
-import {
-  useState
-} from 'react'
-import { Button } from '@/components/ui/button'
-import { PieChartIcon } from '@radix-ui/react-icons'
+'use client';
+
+import { useState } from 'react';
+import QuestionInput from './components/QuestionInput';
+import AnswerDisplay from './components/AnswerDisplay';
+import LoadingIndicator from './components/LoadingIndicator';
+import { QueryResponse } from '@/lib/types';
 
 export default function Home() {
-  const [query, setQuery] = useState('')
-  const [result, setResult] = useState('')
-  const [loading, setLoading] = useState(false)
-  async function createIndexAndEmbeddings() {
+  const [answer, setAnswer] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [setupStatus, setSetupStatus] = useState<string | null>(null);
+
+  const handleSubmit = async (query: string) => {
+    setIsLoading(true);
+    setError(null);
+    setAnswer(null);
+
     try {
-      const result = await fetch('/api/setup', {
-        method: "POST"
-      })
-      const json = await result.json()
-      console.log('result: ', json)
-      window.alert('You can enter your query now!')
-    } catch (err) {
-      console.log('err:', err)
-    }
-  }
-  
-  async function sendQuery() {
-    if (!query) return;
-    setResult('');
-    setLoading(true);
-  
-    try {
-      const result = await fetch('/api/read', {
+      const response = await fetch('/api/read', {
         method: 'POST',
-        body: JSON.stringify(query),
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ query }),
       });
 
-      console.log(result);
-  
-      if (!result.ok) {
-        throw new Error(`HTTP error! Status: ${result.status}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
       }
-  
-      const json = await result.json();
-      setResult(json.data);
-      setLoading(false);
+
+      const data: QueryResponse = await response.json();
+      setAnswer(data.answer);
     } catch (err) {
-      console.log('err:', err);
-      setLoading(false);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
+
+  const handleSetup = async () => {
+    setIsLoading(true);
+    setSetupStatus('Setting up document database...');
+    setError(null);
+
+    try {
+      const response = await fetch('/api/setup', {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      setSetupStatus('Document database initialized successfully! You can now ask questions.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to initialize document database');
+      setSetupStatus(null);
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <main className="flex flex-1 flex-col justify-center items-center p-24">
-      <p
-        className='text-xl font-medium'
-      >
-      Pinecone, Langchain, OpenAI API and Next.js
-      </p>
-      <input
-      className='
-      mt-3
-      rounded border w-[400px]
-      text-black px-2 py-1' onChange={e => setQuery(e.target.value)} />
-      <Button
-      className='w-[400px] mt-3'
-      onClick={sendQuery}>Ask me!</Button>
-      {
-        loading && <PieChartIcon className='my-5 w-8 h-8 animate-spin' />
-      }
-      {
-        result && (
-          <p className='my-8 border p-4 rounded'>{result}</p>
-        )
-      }
-      
-      <Button
-      className='w-[400px] mt-2'
-      variant='outline'
-      onClick={createIndexAndEmbeddings}>Initialise database for query</Button>
-    </main>
-  )
+    <div>
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Document Question Answering</h2>
+        <p className="text-gray-600">
+          Upload your documents and ask questions to get AI-powered answers based on their content.
+        </p>
+      </div>
+
+      <QuestionInput onSubmit={handleSubmit} onSetup={handleSetup} isLoading={isLoading} />
+
+      {setupStatus && !error && (
+        <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
+          <p className="text-green-700">{setupStatus}</p>
+        </div>
+      )}
+
+      {isLoading ? <LoadingIndicator /> : <AnswerDisplay answer={answer} error={error} />}
+    </div>
+  );
 }

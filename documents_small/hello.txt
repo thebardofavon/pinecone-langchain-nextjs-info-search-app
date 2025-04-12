@@ -1,0 +1,19 @@
+Mood-Driven Interactive Journal
+
+Core Features:
+
+Daily Journal Entries: Rich text editing with markdown support.
+Mood Tracking: Tag each entry with your mood — happy, calm, stressed, etc.
+Emotion Analysis: Use NLP to analyze sentiment and suggest mood from your writing.
+Visual Mood Calendar: See how your mood changes over time with a heatmap-style calendar.
+Media Attachments: Add images, audio, or even voice notes to your entries.
+Search & Filters: Easily find past entries by date, mood, or keyword.
+Prompts & Reflection Questions: Optional daily prompts to inspire your writing.
+Password Protection: Keep your journal private and secure.
+
+
+Stretch Goals:
+
+AI-Powered Suggestions: Recommend reflection prompts based on your mood.
+Voice-to-Text: Let users dictate their journal entries.
+Custom Themes: Personalize the journal’s look and feel.
